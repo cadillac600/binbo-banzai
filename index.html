@@ -518,18 +518,23 @@
 
   /* ---- 読書位置を保存・復元 ---- */
   var saveTimer;
+  var isRestoring = false;
+
   function restoreScroll() {
     var saved = localStorage.getItem('binbo_scroll');
     if (saved && parseInt(saved) > 100) {
+      isRestoring = true;
       requestAnimationFrame(function () {
         setTimeout(function () {
           window.scrollTo({ top: parseInt(saved), behavior: 'instant' });
-        }, 50);
+          setTimeout(function () { isRestoring = false; }, 500);
+        }, 80);
       });
     }
   }
 
   window.addEventListener('scroll', function () {
+    if (isRestoring) return;
     clearTimeout(saveTimer);
     saveTimer = setTimeout(function () {
       localStorage.setItem('binbo_scroll', Math.round(window.scrollY));
