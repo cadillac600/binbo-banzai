@@ -95,55 +95,16 @@
       letter-spacing: 0.15em;
     }
 
-    /* ========== TOC Bar ========== */
-    .toc-toggle-bar {
+    /* ========== TOC (常時表示) ========== */
+    .toc {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
     }
-
-    .toc-toggle-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      width: 100%;
-      max-width: var(--max-w);
-      margin: 0 auto;
-      padding: 0.7rem 1.2rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: var(--sans);
-      font-size: 0.82rem;
-      color: var(--text-mid);
-      letter-spacing: 0.08em;
-      text-align: left;
-    }
-
-    .toc-toggle-btn:hover { color: var(--accent); }
-
-    .toc-toggle-btn .icon {
-      font-size: 1rem;
-      transition: transform 0.2s;
-    }
-
-    .toc-toggle-btn.open .icon { transform: rotate(180deg); }
-
-    .toc-panel {
-      display: none;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 0 1.2rem;
-    }
-
-    .toc-panel.open { display: block; }
 
     .toc-inner {
       max-width: var(--max-w);
       margin: 0 auto;
-      padding: 0 1.2rem;
+      padding: 1.4rem 1.4rem 1.6rem;
     }
 
     .toc-inner h2 {
@@ -152,13 +113,13 @@
       letter-spacing: 0.2em;
       color: var(--text-light);
       text-transform: uppercase;
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.9rem;
     }
 
     .toc-inner ul {
       list-style: none;
       columns: 2;
-      column-gap: 1rem;
+      column-gap: 1.5rem;
     }
 
     @media (max-width: 500px) {
@@ -167,7 +128,7 @@
 
     .toc-inner li {
       break-inside: avoid;
-      margin-bottom: 0.25rem;
+      margin-bottom: 0.2rem;
     }
 
     .toc-inner a {
@@ -175,11 +136,10 @@
       font-size: 0.85rem;
       color: var(--text-mid);
       text-decoration: none;
-      line-height: 1.6;
+      line-height: 1.7;
       display: block;
-      padding: 0.15rem 0;
+      padding: 0.15rem 0 0.15rem 0.6rem;
       border-left: 2px solid transparent;
-      padding-left: 0.6rem;
       transition: color 0.15s, border-color 0.15s;
     }
 
@@ -408,17 +368,11 @@
   <div class="cover-year">2008年3月 初版発行</div>
 </header>
 
-<!-- Sticky TOC toggle -->
-<nav class="toc-toggle-bar" aria-label="目次">
-  <button class="toc-toggle-btn" id="tocBtn" aria-expanded="false" aria-controls="tocPanel">
-    <span class="icon">▾</span>
-    <span>目次を開く</span>
-  </button>
-  <div class="toc-panel" id="tocPanel" role="region">
-    <div class="toc-inner">
-      <h2>目次</h2>
-      <ul id="tocList"></ul>
-    </div>
+<!-- TOC (常時表示) -->
+<nav class="toc" aria-label="目次">
+  <div class="toc-inner">
+    <h2>目次</h2>
+    <ul id="tocList"></ul>
   </div>
 </nav>
 
@@ -448,12 +402,9 @@
 (function () {
   'use strict';
 
-  const bookEl   = document.getElementById('book');
-  const loadEl   = document.getElementById('loading');
-  const tocBtn   = document.getElementById('tocBtn');
-  const tocPanel = document.getElementById('tocPanel');
-  const tocList  = document.getElementById('tocList');
-  const topBtn   = document.getElementById('top-btn');
+  const bookEl  = document.getElementById('book');
+  const tocList = document.getElementById('tocList');
+  const topBtn  = document.getElementById('top-btn');
 
   /* ---- Configure marked ---- */
   marked.setOptions({
@@ -468,9 +419,6 @@
       return res.text();
     })
     .then(function (md) {
-      /* Remove the raw --- header block at the very top (metadata block) */
-      md = md.replace(/^---[\s\S]*?---\n/, '');
-
       var html = marked.parse(md);
       bookEl.innerHTML = html;
 
@@ -506,25 +454,10 @@
       var a  = document.createElement('a');
       a.href = '#' + id;
       a.textContent = h.textContent;
-      a.addEventListener('click', function () {
-        tocPanel.classList.remove('open');
-        tocBtn.classList.remove('open');
-        tocBtn.querySelector('span:last-child').textContent = '目次を開く';
-        tocBtn.setAttribute('aria-expanded', 'false');
-      });
       li.appendChild(a);
       tocList.appendChild(li);
     });
   }
-
-  /* ---- TOC toggle ---- */
-  tocBtn.addEventListener('click', function () {
-    var isOpen = tocPanel.classList.toggle('open');
-    tocBtn.classList.toggle('open', isOpen);
-    tocBtn.setAttribute('aria-expanded', String(isOpen));
-    tocBtn.querySelector('span:last-child').textContent =
-      isOpen ? '目次を閉じる' : '目次を開く';
-  });
 
   /* ---- Scroll to top button ---- */
   window.addEventListener('scroll', function () {
