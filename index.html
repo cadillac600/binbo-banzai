@@ -480,6 +480,7 @@
 
       buildTOC();
       addHeadingIds();
+      restoreScroll();
     })
     .catch(function (err) {
       bookEl.innerHTML =
@@ -515,8 +516,22 @@
     });
   }
 
-  /* ---- Scroll to top button ---- */
+  /* ---- 読書位置を保存・復元 ---- */
+  var saveTimer;
+  function restoreScroll() {
+    var saved = localStorage.getItem('binbo_scroll');
+    if (saved && parseInt(saved) > 100) {
+      window.scrollTo({ top: parseInt(saved), behavior: 'instant' });
+    }
+  }
+
   window.addEventListener('scroll', function () {
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function () {
+      localStorage.setItem('binbo_scroll', Math.round(window.scrollY));
+    }, 300);
+
+    /* ---- Scroll to top button ---- */
     if (window.scrollY > 400) {
       topBtn.classList.add('visible');
     } else {
@@ -525,6 +540,7 @@
   }, { passive: true });
 
   topBtn.addEventListener('click', function () {
+    localStorage.removeItem('binbo_scroll');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 })();
