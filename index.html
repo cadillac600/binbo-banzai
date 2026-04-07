@@ -46,8 +46,21 @@
     .cover {
       background: linear-gradient(160deg, #3d1f0a 0%, #6b3318 50%, #8b4513 100%);
       color: #fff;
-      text-align: center;
-      padding: 5rem 1.5rem 4rem;
+      padding: 4rem 1.5rem 3.5rem;
+    }
+
+    .cover-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .cover-text {
+      flex: 1;
+      text-align: left;
     }
 
     .cover-label {
@@ -55,12 +68,12 @@
       font-size: 0.72rem;
       letter-spacing: 0.25em;
       color: rgba(255,255,255,0.6);
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
       text-transform: uppercase;
     }
 
     .cover h1 {
-      font-size: clamp(2.2rem, 8vw, 3.6rem);
+      font-size: clamp(2rem, 7vw, 3.2rem);
       font-weight: 700;
       letter-spacing: 0.06em;
       line-height: 1.25;
@@ -68,10 +81,10 @@
     }
 
     .cover-sub {
-      font-size: clamp(1rem, 3vw, 1.3rem);
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
       font-weight: 300;
       color: rgba(255,255,255,0.75);
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
       letter-spacing: 0.05em;
     }
 
@@ -95,6 +108,23 @@
       letter-spacing: 0.15em;
     }
 
+    .cover-book-img {
+      flex-shrink: 0;
+      width: clamp(100px, 22vw, 150px);
+    }
+
+    .cover-book-img img {
+      width: 100%;
+      border-radius: 4px;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+      display: block;
+    }
+
+    @media (max-width: 400px) {
+      .cover-book-img { width: 90px; }
+      .cover-inner { gap: 1rem; }
+    }
+
     /* ========== TOC (常時表示) ========== */
     .toc {
       background: var(--surface);
@@ -107,13 +137,28 @@
       padding: 1.4rem 1.4rem 1.6rem;
     }
 
+    .toc-header {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.9rem;
+    }
+
     .toc-inner h2 {
       font-family: var(--sans);
       font-size: 0.72rem;
       letter-spacing: 0.2em;
       color: var(--text-light);
       text-transform: uppercase;
-      margin-bottom: 0.9rem;
+      margin-bottom: 0;
+    }
+
+    .toc-note {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      color: var(--text-light);
+      letter-spacing: 0;
     }
 
     .toc-inner ul {
@@ -361,17 +406,27 @@
 
 <!-- Cover -->
 <header class="cover">
-  <div class="cover-label">自伝エッセイ</div>
-  <h1>ビンボー万歳！</h1>
-  <div class="cover-sub">夢と目標とHAPPYを忘れない</div>
-  <div class="cover-author">むらやん<span>|</span>村上直樹</div>
-  <div class="cover-year">2008年3月 初版発行</div>
+  <div class="cover-inner">
+    <div class="cover-text">
+      <div class="cover-label">自伝エッセイ</div>
+      <h1>ビンボー万歳！</h1>
+      <div class="cover-sub">夢と目標とHAPPYを忘れない</div>
+      <div class="cover-author">むらやん<span>|</span>村上直樹</div>
+      <div class="cover-year">2008年3月 初版発行</div>
+    </div>
+    <div class="cover-book-img">
+      <img src="cover.jpg" alt="ビンボー万歳！書影">
+    </div>
+  </div>
 </header>
 
 <!-- TOC (常時表示) -->
 <nav class="toc" aria-label="目次">
   <div class="toc-inner">
-    <h2>目次</h2>
+    <div class="toc-header">
+      <h2>目次</h2>
+      <span class="toc-note">※目次をタップでその章の先頭に飛びます。</span>
+    </div>
     <ul id="tocList"></ul>
   </div>
 </nav>
