@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ビンボー万歳！ — むらやん（村上直樹）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ========== Reset ========== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ========== Variables ========== */
+    :root {
+      --bg:        #faf9f5;
+      --surface:   #f5f3ed;
+      --text:      #1c1a16;
+      --text-mid:  #4a4540;
+      --text-light:#7a7168;
+      --accent:    #7a3b12;
+      --accent-lt: #b85e2a;
+      --border:    #dedad0;
+      --cap-bg:    #ede9df;
+      --cap-border:#c8bfaf;
+      --max-w:     700px;
+      --serif:     'Noto Serif JP', 'YuMincho', '游明朝', 'Hiragino Mincho ProN', 'HiraMinProN-W3', Georgia, serif;
+      --sans:      'Noto Sans JP', 'Yu Gothic', '游ゴシック', 'Hiragino Kaku Gothic ProN', sans-serif;
+    }
+
+    /* ========== Base ========== */
+    html {
+      font-size: 18px;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--serif);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 2.0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========== Cover / Hero ========== */
+    .cover {
+      background: linear-gradient(160deg, #3d1f0a 0%, #6b3318 50%, #8b4513 100%);
+      color: #fff;
+      text-align: center;
+      padding: 5rem 1.5rem 4rem;
+    }
+
+    .cover-label {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+    }
+
+    .cover h1 {
+      font-size: clamp(2.2rem, 8vw, 3.6rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+    }
+
+    .cover-sub {
+      font-size: clamp(1rem, 3vw, 1.3rem);
+      font-weight: 300;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 2rem;
+      letter-spacing: 0.05em;
+    }
+
+    .cover-author {
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.12em;
+    }
+
+    .cover-author span {
+      opacity: 0.6;
+      margin: 0 0.5em;
+    }
+
+    .cover-year {
+      margin-top: 0.5rem;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.15em;
+    }
+
+    /* ========== TOC Bar ========== */
+    .toc-toggle-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .toc-toggle-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0.7rem 1.2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--sans);
+      font-size: 0.82rem;
+      color: var(--text-mid);
+      letter-spacing: 0.08em;
+      text-align: left;
+    }
+
+    .toc-toggle-btn:hover { color: var(--accent); }
+
+    .toc-toggle-btn .icon {
+      font-size: 1rem;
+      transition: transform 0.2s;
+    }
+
+    .toc-toggle-btn.open .icon { transform: rotate(180deg); }
+
+    .toc-panel {
+      display: none;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0 1.2rem;
+    }
+
+    .toc-panel.open { display: block; }
+
+    .toc-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 1.2rem;
+    }
+
+    .toc-inner h2 {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      color: var(--text-light);
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .toc-inner ul {
+      list-style: none;
+      columns: 2;
+      column-gap: 1rem;
+    }
+
+    @media (max-width: 500px) {
+      .toc-inner ul { columns: 1; }
+    }
+
+    .toc-inner li {
+      break-inside: avoid;
+      margin-bottom: 0.25rem;
+    }
+
+    .toc-inner a {
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      text-decoration: none;
+      line-height: 1.6;
+      display: block;
+      padding: 0.15rem 0;
+      border-left: 2px solid transparent;
+      padding-left: 0.6rem;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .toc-inner a:hover {
+      color: var(--accent);
+      border-left-color: var(--accent-lt);
+    }
+
+    /* ========== Main content ========== */
+    #book {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 2.5rem 1.4rem 5rem;
+    }
+
+    /* --- Headings --- */
+    #book h1 {
+      font-size: 1.7rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+      margin: 3.5rem 0 1.2rem;
+      padding-top: 1rem;
+      color: var(--text);
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 0.5rem;
+    }
+
+    #book h1:first-child { margin-top: 1rem; }
+
+    #book h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      line-height: 1.5;
+      margin: 3.5rem 0 1rem;
+      padding-top: 0.5rem;
+      color: var(--text);
+      border-left: 4px solid var(--accent);
+      padding-left: 0.7rem;
+    }
+
+    #book h3 {
+      font-family: var(--sans);
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      line-height: 1.7;
+      margin: 2.5rem 0 0.8rem;
+      color: var(--accent);
+    }
+
+    /* --- Paragraphs --- */
+    #book p {
+      margin-bottom: 1.1rem;
+      text-align: justify;
+      word-break: break-all;
+    }
+
+    /* --- Horizontal rule (chapter divider) --- */
+    #book hr {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 2.5rem 0;
+    }
+
+    /* --- Strong / bold --- */
+    #book strong {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* --- Em / italic --- */
+    #book em {
+      font-style: normal;
+      color: var(--text-mid);
+    }
+
+    /* --- Blockquote --- */
+    #book blockquote {
+      margin: 1.5rem 0;
+      padding: 1rem 1.2rem;
+      background: var(--surface);
+      border-left: 3px solid var(--accent-lt);
+      color: var(--text-mid);
+      font-size: 0.95rem;
+    }
+
+    /* --- Lists --- */
+    #book ul, #book ol {
+      margin: 0.8rem 0 1rem 1.4rem;
+    }
+
+    #book li { margin-bottom: 0.3rem; }
+
+    /* --- Inline code / special terms --- */
+    #book code {
+      font-family: var(--sans);
+      font-size: 0.88em;
+      background: var(--surface);
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      color: var(--accent);
+    }
+
+    /* ========== Illustration caption ========== */
+    .illust-caption {
+      background: var(--cap-bg);
+      border: 1px solid var(--cap-border);
+      border-radius: 6px;
+      padding: 0.75rem 1rem;
+      margin: 1.2rem 0;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      font-style: italic;
+    }
+
+    .illust-caption::before {
+      content: '📌 ';
+      font-style: normal;
+    }
+
+    /* ========== Special note (italicized notes in parens) ========== */
+    #book p em:only-child {
+      display: block;
+      color: var(--text-light);
+      font-style: italic;
+      font-size: 0.88rem;
+    }
+
+    /* ========== Footer ========== */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.4rem;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    .footer-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+
+    .footer-meta {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--text-light);
+      line-height: 2.0;
+    }
+
+    /* ========== Loading state ========== */
+    #loading {
+      text-align: center;
+      padding: 4rem 1rem;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      color: var(--text-light);
+      letter-spacing: 0.1em;
+    }
+
+    .dot-anim::after {
+      content: '';
+      animation: dots 1.2s steps(3, end) infinite;
+    }
+
+    @keyframes dots {
+      0%   { content: ''; }
+      33%  { content: '・'; }
+      66%  { content: '・・'; }
+      100% { content: '・・・'; }
+    }
+
+    /* ========== Scroll-to-top ========== */
+    #top-btn {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: 2.8rem;
+      height: 2.8rem;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+      z-index: 200;
+    }
+
+    #top-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #top-btn:hover { background: var(--accent-lt); }
+
+    /* ========== Mobile tweaks ========== */
+    @media (max-width: 480px) {
+      html { font-size: 16px; }
+      #book { padding: 1.8rem 1rem 4rem; }
+      #book h2 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cover -->
+<header class="cover">
+  <div class="cover-label">自伝エッセイ</div>
+  <h1>ビンボー万歳！</h1>
+  <div class="cover-sub">夢と目標とHAPPYを忘れない</div>
+  <div class="cover-author">むらやん<span>|</span>村上直樹</div>
+  <div class="cover-year">2008年3月 初版発行</div>
+</header>
+
+<!-- Sticky TOC toggle -->
+<nav class="toc-toggle-bar" aria-label="目次">
+  <button class="toc-toggle-btn" id="tocBtn" aria-expanded="false" aria-controls="tocPanel">
+    <span class="icon">▾</span>
+    <span>目次を開く</span>
+  </button>
+  <div class="toc-panel" id="tocPanel" role="region">
+    <div class="toc-inner">
+      <h2>目次</h2>
+      <ul id="tocList"></ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Book content -->
+<main id="book">
+  <div id="loading"><span class="dot-anim">読み込み中</span></div>
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-title">ビンボー万歳！</div>
+    <div class="footer-meta">
+      著者：むらやん（村上直樹）<br>
+      発行：アルケミックス株式会社 / 発売：株式会社北辰堂<br>
+      2008年3月11日 初版発行
+    </div>
+  </div>
+</footer>
+
+<!-- Scroll to top -->
+<button id="top-btn" aria-label="ページトップへ">▲</button>
+
+<!-- marked.js -->
+<script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  const bookEl   = document.getElementById('book');
+  const loadEl   = document.getElementById('loading');
+  const tocBtn   = document.getElementById('tocBtn');
+  const tocPanel = document.getElementById('tocPanel');
+  const tocList  = document.getElementById('tocList');
+  const topBtn   = document.getElementById('top-btn');
+
+  /* ---- Configure marked ---- */
+  marked.setOptions({
+    breaks: true,      // single newline → <br>
+    gfm: true
+  });
+
+  /* ---- Fetch & render book.md ---- */
+  fetch('book.md')
+    .then(function (res) {
+      if (!res.ok) throw new Error('fetch failed: ' + res.status);
+      return res.text();
+    })
+    .then(function (md) {
+      /* Remove the raw --- header block at the very top (metadata block) */
+      md = md.replace(/^---[\s\S]*?---\n/, '');
+
+      var html = marked.parse(md);
+      bookEl.innerHTML = html;
+
+      buildTOC();
+      addHeadingIds();
+    })
+    .catch(function (err) {
+      bookEl.innerHTML =
+        '<p style="color:#c00;font-family:sans-serif;padding:2rem;">読み込みエラー: ' +
+        err.message + '<br>ローカルで開く場合はウェブサーバー経由でアクセスしてください。</p>';
+    });
+
+  /* ---- Build TOC from h2 headings ---- */
+  function slugify(text) {
+    return encodeURIComponent(text.trim().replace(/\s+/g, '-'));
+  }
+
+  function addHeadingIds() {
+    var headings = bookEl.querySelectorAll('h1, h2, h3');
+    headings.forEach(function (h) {
+      if (!h.id) {
+        h.id = slugify(h.textContent);
+      }
+    });
+  }
+
+  function buildTOC() {
+    var headings = bookEl.querySelectorAll('h2');
+    headings.forEach(function (h) {
+      var id = slugify(h.textContent);
+      h.id = id;
+      var li = document.createElement('li');
+      var a  = document.createElement('a');
+      a.href = '#' + id;
+      a.textContent = h.textContent;
+      a.addEventListener('click', function () {
+        tocPanel.classList.remove('open');
+        tocBtn.classList.remove('open');
+        tocBtn.querySelector('span:last-child').textContent = '目次を開く';
+        tocBtn.setAttribute('aria-expanded', 'false');
+      });
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+  }
+
+  /* ---- TOC toggle ---- */
+  tocBtn.addEventListener('click', function () {
+    var isOpen = tocPanel.classList.toggle('open');
+    tocBtn.classList.toggle('open', isOpen);
+    tocBtn.setAttribute('aria-expanded', String(isOpen));
+    tocBtn.querySelector('span:last-child').textContent =
+      isOpen ? '目次を閉じる' : '目次を開く';
+  });
+
+  /* ---- Scroll to top button ---- */
+  window.addEventListener('scroll', function () {
+    if (window.scrollY > 400) {
+      topBtn.classList.add('visible');
+    } else {
+      topBtn.classList.remove('visible');
+    }
+  }, { passive: true });
+
+  topBtn.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+</script>
+</body>
+</html>
