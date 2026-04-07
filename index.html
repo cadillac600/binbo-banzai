@@ -521,7 +521,11 @@
   function restoreScroll() {
     var saved = localStorage.getItem('binbo_scroll');
     if (saved && parseInt(saved) > 100) {
-      window.scrollTo({ top: parseInt(saved), behavior: 'instant' });
+      requestAnimationFrame(function () {
+        setTimeout(function () {
+          window.scrollTo({ top: parseInt(saved), behavior: 'instant' });
+        }, 50);
+      });
     }
   }
 
